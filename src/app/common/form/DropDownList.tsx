@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Label, Select } from "semantic-ui-react";
+import { Form, Label, Select } from "semantic-ui-react";
 
 interface Props{
     Placeholder:string,

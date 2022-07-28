@@ -21,30 +21,15 @@ export default function DoubleInput(prop:Props){
         let value = null;
         if (event.target.value) {
             try{
-    
                 value = parseFloat(event.target.value);
                 setFieldValue(value);
                 prop.onchange(value);
-                
             }
             catch(error){
                 console.log(error)
                 event.target.vaule = fieldValue;
             }
             
-            
-    
-            // // Test for valid number
-            // if ( isNaN(value)) {
-            //    // event.setState({showInvalidError: true});
-            // } else {
-            //     //event.setState({ value: value });
-            //    // event.props.onChange(value);
-            //     prop.onchange(value)
-            //     event.preventDefault()
-            //    // event.setState({showInvalidError: false});
-                
-            // }
         }   
     }
 
