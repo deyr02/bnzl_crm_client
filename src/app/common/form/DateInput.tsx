@@ -18,7 +18,14 @@ export default function DateInput(prop:Props){
         <SemanticDatepicker 
          required={prop.isrequired } showToday
             onChange={(event, data)=>{
-                prop.onchange(data.value)
+                if (data.value === null){
+                    prop.onchange(prop.FieldName, "")
+                }
+                else{
+                    prop.onchange(prop.FieldName, data.value)
+
+                }
+               
             }
         }/>
         </div>

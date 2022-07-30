@@ -12,7 +12,7 @@ function App() {
       <NavBar/>
       <Container style ={{marginTop: '7em'}}>
 
-       {/* <ActivityDashBoard/>  */}
+       <ActivityDashBoard/>  
 
 
 

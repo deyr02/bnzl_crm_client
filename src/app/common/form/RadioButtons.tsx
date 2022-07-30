@@ -40,7 +40,7 @@ export default function RadioButtons(prop:Props){
                 checked={prop.OptionList[i] === selection}
                 onChange={()=>{
                     setSelection(prop.OptionList[i])
-                    prop.onchange(prop.OptionList[i])
+                    prop.onchange(prop.FieldName, prop.OptionList[i])
                 }
             }
 

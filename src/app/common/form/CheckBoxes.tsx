@@ -48,10 +48,9 @@ export default function CheckBoxes(prop:Props){
                 label={prop.OptionList[i]}
                 value={prop.OptionList[i]}
                 onChange={()=>{
-                   //console.log(prop.OptionList[i])
-                    //prop.onchange(prop.OptionList[i])
                     handleCheck(i)
-                    console.log(getSelections())
+                 
+                    prop.onchange(prop.FieldName, getSelections())
                 }
             }
             />

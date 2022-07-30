@@ -15,7 +15,7 @@ export default function NumberInput(prop:Props){
     return(
         <Form.Field>
             <Label>{prop.FieldName}</Label>
-            <input onChange={(event)=> prop.onchange(event.target.value) } type={prop.Type} name={prop.FieldName} required={prop.isrequired} max={prop.max} min={prop.min} placeholder={prop.Placeholder} ></input>
+            <input onChange={(event)=> prop.onchange(prop.FieldName, event.target.value) } type={prop.Type} name={prop.FieldName} required={prop.isrequired} max={prop.max} min={prop.min} placeholder={prop.Placeholder} ></input>
         </Form.Field>
     )
 }

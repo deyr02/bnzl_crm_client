@@ -12,6 +12,11 @@ interface GetAllActivity{
 }
 
 
+
+
+
+
+
 export interface GetMetaActivityCollectionResponse{
     data: GetMetaActivityCollection;
 }
@@ -78,7 +83,6 @@ export default class ActivityStore{
         }
     }
 
-
     loadingMetaActivityFileds = async() => {
         this.loadingMetaIniial = true;
         try{
@@ -120,4 +124,15 @@ export default class ActivityStore{
         }
     }
 
+    createActivity = async (activityFormCollection:{})=>{
+      
+        try{
+            await agent.Activities.create(activityFormCollection);
+            
+        }catch(error){
+            console.log(error);
+          
+        }
+        
+    }
 }

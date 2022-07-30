@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
-import SemanticDatepicker from "react-semantic-ui-datepickers";
+import { useEffect, useState } from "react";
 import { Button, Form, Header, Segment } from "semantic-ui-react";
 import CheckBoxes from "../../../app/common/form/CheckBoxes";
 import DateInput from "../../../app/common/form/DateInput";
@@ -9,49 +8,125 @@ import DropDownList from "../../../app/common/form/DropDownList";
 import NumberInput from "../../../app/common/form/NumberInput";
 import RadioButtons from "../../../app/common/form/RadioButtons";
 import TextInput from "../../../app/common/form/TextInput";
+import { DataType } from "../../../app/models/DataType";
+import { NewElementValue } from "../../../app/models/ElementValue";
 import { FieldType } from "../../../app/models/FieldType";
 import { useStore } from "../../../app/stores/store";
 
+
+interface activityFormData{
+    query:string;
+}
+
+
 export default observer(function ActivityForm(){
+    
+
+    var fieldValues= new Array();
+
+    function formantFieldValues(){
+        let output = "[";
+      
+
+        fieldValues.forEach(ele =>{
+            output += `{ key:\"${ele.key}\" DataType:${ele.DataType} value:\"${ele.value}\" },`;
+        })
+
+        output+="]";
+        return output
+
+    }
+
+
     function handleSubmit(values:any){
-        console.log(activityname)
+        console.log(fieldValues)
+
+        var mutation = "mutation AddActivity{AddNewActivity(input:{Properties:" + formantFieldValues() + " }){ActivityID CreatedAT UpdatedAT CreatedBy ModifiedBy DeletedAT Properties{ key DataType value } }}";
+
+          var formCOllection:activityFormData ={query:mutation};
+          console.log(formCOllection);
+          createActivity(formCOllection).then(()=>{
+            console.log("created");
+          })
+
+
+
     }
-    const[activityname , setactivityName] = useState('')
-    const OptionList: string[] = ["one","two", "three", "four"]
-    function setActivity(values:string){
-        setactivityName(values)
-    }
-
-
-
-
-
 
     const {activityStore} = useStore();
-    const {loadingMetaActivityFileds, activityMetaRegistry} = activityStore;
+    const {loadingMetaActivityFileds, activityMetaRegistry, createActivity} = activityStore;
     useEffect(()=>{
-        loadingMetaActivityFileds().then(()=>renderForm());
+        loadingMetaActivityFileds();
     },[loadingMetaActivityFileds])
+
+    
+
+    function SetFieldValue(key:string,  value:string){
+        fieldValues.forEach(ele =>{
+            if(ele.key === key){
+                ele.value = value;
+            }
+        })
+    }
+
+
 
 
     function renderForm(){
         var output = new Array(activityMetaRegistry.size);
-
         activityMetaRegistry.forEach(element => {
-            
+
+            var _field:NewElementValue = {key: element.FieldName, DataType: element.DataType, value: element.DefaultValue} 
+             fieldValues.push (_field);
             switch(element.FieldType){
                 case FieldType.TextBox:
-                    var item = <TextInput 
-                        key={element.FieldID} 
-                        Placeholder={`input ${element.FieldName}`}
-                        FieldName={element.FieldName}
-                        max = {element.MaxValue}
-                        min= {element.MinValue}
-                        isrequired={element.IsRequired}
-                        onchange= {setActivity}
-                        />
-                    output.push(item);
-                    console.log("TextBox");
+
+                    switch(element.DataType){
+                        case  DataType.String:
+
+                            var item = <TextInput 
+                            key={element.FieldID} 
+                            Placeholder={`input ${element.FieldName}`}
+                            FieldName={element.FieldName}
+                            max = {element.MaxValue}
+                            min= {element.MinValue}
+                            isrequired={element.IsRequired}
+                            onchange= {SetFieldValue}
+                            />
+                             output.push(item);
+                            break;
+
+                        case DataType.Integer:
+                            var item = <NumberInput 
+                            key={element.FieldID} 
+                            Placeholder={`input ${element.FieldName}`}
+                            FieldName={element.FieldName}
+                            max = {element.MaxValue}
+                            min= {element.MinValue}
+                            isrequired={element.IsRequired}
+                            onchange= {SetFieldValue}
+                            />
+                             output.push(item);
+                            break;
+
+                        case DataType.Double:
+                            var item = <DoubleInput 
+                            key={element.FieldID} 
+                            Placeholder={`input ${element.FieldName}`}
+                            FieldName={element.FieldName}
+                            max = {element.MaxValue}
+                            min= {element.MinValue}
+                            isrequired={element.IsRequired}
+                            onchange= {SetFieldValue}
+                            />
+                             output.push(item);
+                            break;
+                    }
+
+
+
+
+                   
                     break;
 
 
@@ -64,7 +139,7 @@ export default observer(function ActivityForm(){
                         Type={element.DataType}
                         OptionList={element.PossibleValues}
                         DefultValue={element.DefaultValue}
-                        onchange= {setActivity}
+                        onchange= {SetFieldValue}
                     />
                     output.push(item);
                     break;
@@ -77,7 +152,7 @@ export default observer(function ActivityForm(){
                         Type={element.DataType}
                         OptionList={element.PossibleValues}
                         DefultValue={element.DefaultValue}
-                        onchange= {setActivity}
+                        onchange= {SetFieldValue}
                     />
                     output.push(item);
                     break;
@@ -91,7 +166,7 @@ export default observer(function ActivityForm(){
                         Type={element.DataType}
                         OptionList={element.PossibleValues}
                         DefultValue={element.DefaultValue}
-                        onchange= {setActivity}
+                        onchange= {SetFieldValue}
                     />
                     output.push(item);
                     break;
@@ -104,7 +179,7 @@ export default observer(function ActivityForm(){
                         Type={element.DataType}
                         isrequired={element.IsRequired}  
                       
-                        onchange= {setActivity}
+                        onchange= {SetFieldValue}
                     />
                     output.push(item);
                     break;

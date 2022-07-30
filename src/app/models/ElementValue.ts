@@ -6,3 +6,10 @@ export interface ElementValue{
     DataType:  DataType;
     value: string;
 }
+
+
+export interface NewElementValue{
+    key: string;
+    DataType:  DataType;
+    value: string;
+}

@@ -87,8 +87,12 @@ const Activities = {
     list: (param:string)=> axios.get<GetAllActivityResponse>(`/activity/getallactivities?${param}`)
         .then(responseBody),
 
-        FormFileds: (param:string)=> axios.get<GetMetaActivityCollectionResponse>(`/activityform/metaactivity?${param}`)
+    FormFileds: (param:string)=> axios.get<GetMetaActivityCollectionResponse>(`/activityform/metaactivity?${param}`)
         .then(responseBody),
+
+    create: (activityFormcollection:any)=> requests.post<void>('/activity/', activityFormcollection),
+
+    
 }
 
 

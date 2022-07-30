@@ -23,7 +23,7 @@ export default function DoubleInput(prop:Props){
             try{
                 value = parseFloat(event.target.value);
                 setFieldValue(value);
-                prop.onchange(value);
+                prop.onchange(prop.FieldName, value);
             }
             catch(error){
                 console.log(error)

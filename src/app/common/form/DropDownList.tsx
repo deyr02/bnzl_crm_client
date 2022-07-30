@@ -29,7 +29,7 @@ export default function DropDownList(prop:Props){
     return(
         <Form.Field>
             <Label>{prop.FieldName}</Label>
-            <Select options={getOptions()} defaultValue ={prop.DefultValue} onChange={(e:any, {value}) => prop.onchange(value?.toString())} />
+            <Select options={getOptions()} defaultValue ={prop.DefultValue}  onChange={(e:any, {value}) => prop.onchange(prop.FieldName, value?.toString())} />
         </Form.Field>
     )
 }

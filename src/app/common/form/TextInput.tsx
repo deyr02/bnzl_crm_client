@@ -17,7 +17,7 @@ export default function TextInput(prop:Props){
     return(
         <Form.Field>
             <Label>{prop.FieldName}</Label>
-            <input onChange={(event)=> prop.onchange(event.target.value) } type={prop.Type} maxLength={prop.max} minLength={prop.min} name={prop.FieldName} required={prop.isrequired} placeholder={prop.Placeholder} ></input>
+            <input onChange={(event)=> prop.onchange(prop.FieldName, event.target.value) } type={prop.Type} maxLength={prop.max} minLength={prop.min} name={prop.FieldName} required={prop.isrequired} placeholder={prop.Placeholder} ></input>
         </Form.Field>
     )
 }
