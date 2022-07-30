@@ -22,17 +22,14 @@ export default function CheckBoxes(prop:Props){
   
 
     function handleCheck(index:any){
-      SelectedItems[index].isChecked = SelectedItems[index].isChecked ? true:false;
-      console.log(SelectedItems)
-        
+      SelectedItems[index].isChecked = !SelectedItems[index].isChecked    
     }
 
     function getSelections(){
         var output:string= "";
         for(let i = 0; i< SelectedItems.length; i++){
-            output = output + SelectedItems[i].value;
-
             if(SelectedItems[i].isChecked){
+                output = output + SelectedItems[i].value;
                 if(i < SelectedItems.length-1){
                     output = output + ",";
                  }
