@@ -101,9 +101,12 @@ export default class ActivityStore{
                 }
               }`);
          runInAction(()=>{
-            result.data.GetMetaActivityCollection.Fields.forEach(field => {
-                this.activityMetaRegistry.set(field.FieldID, field);
-            });
+            if (result.data.GetMetaActivityCollection ){
+                result.data.GetMetaActivityCollection.Fields.forEach(field => {
+                    this.activityMetaRegistry.set(field.FieldID, field);
+                });
+            }
+            
           
             console.log(result.data.GetMetaActivityCollection);
             this.loadingMetaIniial=false;

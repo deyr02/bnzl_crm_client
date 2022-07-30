@@ -6,9 +6,9 @@ export interface CustomFieldElement{
  FieldName: string;
 DataType: DataType;
   FieldType: FieldType;
-  IsRequired: Boolean;
-  Visibility: Boolean;
-  SystemFieled: Boolean;
+  IsRequired: boolean;
+  Visibility: boolean;
+  SystemFieled: boolean;
   MaxValue: number;
   MinValue: number;
   DefaultValue: string;

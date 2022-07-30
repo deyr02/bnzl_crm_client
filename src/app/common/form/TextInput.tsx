@@ -8,7 +8,7 @@ interface Props{
     Type?:string,
     max: number,
     min: number,
-    isrequired: boolean,
+    isrequired: boolean
     onchange:any
 }
 
