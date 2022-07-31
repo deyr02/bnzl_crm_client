@@ -200,7 +200,7 @@ function generatePdf (){
                 onDrop={drop}
                 />
                 <Grid.Column width={16} textAlign="right">
-                    <Button onClick={generatePdf} primary>Generate Repoort</Button>
+                    <Button onClick={generatePdf} primary>Generate PDF Report</Button>
                 </Grid.Column>
 
             </Grid>

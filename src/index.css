@@ -5,7 +5,47 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #eaeaea !important;
 }
+
+.logo{
+  position:  fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.loginBox{
+  text-align: left;
+  margin:25px;
+  padding:35px 50px;
+  background-color:#0580b181;
+  
+}
+
+.masthead {
+  display: flex;
+  align-items: center;
+  
+  height: 100vh;
+}
+
+.masthead .ui.menu .ui.button,
+.ui.menu a.ui.inverted.button {
+  margin-left: 0.5em;
+}
+
+.masthead h1.ui.header {
+  font-size: 4em;
+  font-weight: normal;
+}
+
+.masthead h2 {
+  font-size: 1.7em;
+  font-weight: normal;
+}
+
+
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
