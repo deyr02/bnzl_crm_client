@@ -3,6 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import { Container } from 'semantic-ui-react';
 import ActivityDashBoard from '../../features/activiites/dashboard/ActivityDashBoard';
 import ActivityForm from '../../features/activiites/form/ActivityForm';
+import ActivityReport from '../../features/activiites/report/ActivityReport';
 import NavBar from './NavBar';
 
 function App() {
@@ -12,11 +13,10 @@ function App() {
       <NavBar/>
       <Container style ={{marginTop: '7em'}}>
 
-       <ActivityDashBoard/>  
+       {/* <ActivityDashBoard/>  
+       <ActivityForm/>  */}
 
-
-
-       <ActivityForm/> 
+       <ActivityReport/>
       </Container>
       
       

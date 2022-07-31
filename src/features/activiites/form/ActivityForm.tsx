@@ -84,7 +84,7 @@ export default observer(function ActivityForm(){
                     switch(element.DataType){
                         case  DataType.String:
 
-                            var item = <TextInput 
+                            let item_1 = <TextInput 
                             key={element.FieldID} 
                             Placeholder={`input ${element.FieldName}`}
                             FieldName={element.FieldName}
@@ -93,11 +93,11 @@ export default observer(function ActivityForm(){
                             isrequired={element.IsRequired}
                             onchange= {SetFieldValue}
                             />
-                             output.push(item);
+                             output.push(item_1);
                             break;
 
                         case DataType.Integer:
-                            var item = <NumberInput 
+                            let item_2 = <NumberInput 
                             key={element.FieldID} 
                             Placeholder={`input ${element.FieldName}`}
                             FieldName={element.FieldName}
@@ -106,11 +106,11 @@ export default observer(function ActivityForm(){
                             isrequired={element.IsRequired}
                             onchange= {SetFieldValue}
                             />
-                             output.push(item);
+                             output.push(item_2);
                             break;
 
                         case DataType.Double:
-                            var item = <DoubleInput 
+                            let item_3= <DoubleInput 
                             key={element.FieldID} 
                             Placeholder={`input ${element.FieldName}`}
                             FieldName={element.FieldName}
@@ -119,7 +119,7 @@ export default observer(function ActivityForm(){
                             isrequired={element.IsRequired}
                             onchange= {SetFieldValue}
                             />
-                             output.push(item);
+                             output.push(item_3);
                             break;
                     }
 
@@ -132,7 +132,7 @@ export default observer(function ActivityForm(){
 
 
                 case FieldType.CheckBoxes:
-                    var item = <CheckBoxes
+                    let item_4 = <CheckBoxes
                         key={element.FieldID}
                         Placeholder={`input ${element.FieldName}`}
                         FieldName={element.FieldName}
@@ -141,7 +141,7 @@ export default observer(function ActivityForm(){
                         DefultValue={element.DefaultValue}
                         onchange= {SetFieldValue}
                     />
-                    output.push(item);
+                    output.push(item_4);
                     break;
                 
                 case FieldType.RadioButtons:
@@ -159,7 +159,7 @@ export default observer(function ActivityForm(){
 
 
                 case FieldType.DropDownList:
-                    var item = <DropDownList 
+                    let item_5 = <DropDownList 
                         key={element.FieldID}
                         Placeholder={`input ${element.FieldName}`}
                         FieldName={element.FieldName}
@@ -168,11 +168,11 @@ export default observer(function ActivityForm(){
                         DefultValue={element.DefaultValue}
                         onchange= {SetFieldValue}
                     />
-                    output.push(item);
+                    output.push(item_5);
                     break;
 
                 case FieldType.DatePicker:
-                    var item = <DateInput 
+                    let item_6 = <DateInput 
                         key={element.FieldID}
                         Placeholder={`input ${element.FieldName}`}
                         FieldName={element.FieldName}
@@ -181,7 +181,7 @@ export default observer(function ActivityForm(){
                       
                         onchange= {SetFieldValue}
                     />
-                    output.push(item);
+                    output.push(item_6);
                     break;
                 default:
                     console.log(element.FieldType)

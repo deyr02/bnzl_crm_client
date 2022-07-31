@@ -91,7 +91,8 @@ const Activities = {
         .then(responseBody),
 
     create: (activityFormcollection:any)=> requests.post<void>('/activity/', activityFormcollection),
-
+    
+    details: ( param: string) => requests.get<Activity>(`/activity/getactivity?${param}`),
     
 }
 
