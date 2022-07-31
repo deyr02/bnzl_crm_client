@@ -1,5 +1,6 @@
+import jsPDF from "jspdf";
 import React, { useState } from "react";
-import { Container, Grid, Header } from "semantic-ui-react";
+import { Button, Container, Grid, Header } from "semantic-ui-react";
 import Column from "../../../app/common/report/Column";
 import { RowDetails } from "../../../app/models/RowDetails";
 
@@ -120,21 +121,9 @@ function allowDrop(ev:any){
 }
 
 function drop (ev:any){  
-
-    
-  
-//   if(elementID && targetedFrom){
-//     targetedTo = ev.target.id;
-//     moveRow();
-
-
-//     //this.moveDisk(this.elementID, this.targetedFrom, _targetedTo);
-//   }
-
  targetedTo = ev.target.id;
   moveRow();
-
-  console.log(elementID,targetedFrom, targetedTo);
+  //console.log(elementID,targetedFrom, targetedTo);
 }
 
 
@@ -176,6 +165,18 @@ function moveRow(){
 }
 
 
+function generatePdf (){
+    var doc =  new jsPDF("p", "pt", "a3");
+    const elment:HTMLElement|null = document.querySelector("#report");
+    if(elment){
+        doc.html(elment, {
+                    callback: function(pdf){
+                        pdf.save("ActivityReport"+ ".pdf");
+                    }
+                });
+    }
+   
+}
 
 
 
@@ -198,8 +199,12 @@ function moveRow(){
                  allowDrop = {allowDrop}
                 onDrop={drop}
                 />
+                <Grid.Column width={16} textAlign="right">
+                    <Button onClick={generatePdf} primary>Generate Repoort</Button>
+                </Grid.Column>
 
             </Grid>
+            
 
         </Container>
     )
