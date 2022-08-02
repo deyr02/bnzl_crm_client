@@ -1,7 +1,9 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
+import { json } from "stream/consumers";
 import agent from "../api/agent";
 import { Activity } from "../models/Activity";
 import { CustomFieldElement } from "../models/CustomFieldElement";
+import { errorResponse } from "./userStore";
 
 export interface GetAllActivityResponse{
     data: GetAllActivity
@@ -12,6 +14,13 @@ interface GetAllActivity{
 }
 
 
+export interface GetActivityResponse{
+    data: GetActivityByID|null;
+}
+
+interface GetActivityByID{
+    GetActivityByID: Activity|null;
+}
 
 
 
@@ -29,8 +38,17 @@ interface Fields{
     Fields:CustomFieldElement[];
 }
 
+
+
+
+
+
+
+
 export default class ActivityStore{
-    activityRegistry= new Map<string, Activity>();
+    activityRegistry = new Map<string, Activity>();
+    selectedActivityRecord: Activity|null = null;
+    
     activityMetaRegistry= new Map<string, CustomFieldElement>();
     loadingInitial = false;
 
@@ -41,8 +59,9 @@ export default class ActivityStore{
         reaction(
             ()=>{this.activityRegistry.keys();},
             ()=>{
-                this.activityRegistry.clear();
+               // this.activityRegistry.clear();
                 this.loadingActivities();
+                this.loadSelectedActivity();
             }
         )
     }
@@ -71,7 +90,7 @@ export default class ActivityStore{
                 this.activityRegistry.set(activity.ActivityID, activity);
             });
           
-            console.log(result.data.GetAllActivity);
+           
             this.loadingInitial=false;
          })
            
@@ -128,11 +147,58 @@ export default class ActivityStore{
       
         try{
             await agent.Activities.create(activityFormCollection);
+            return true;
             
         }catch(error){
             console.log(error);
+            return false;
           
-        }
-        
+        }  
     }
+
+
+     loadSelectedActivity = async() => {
+       // get all search params (including ?)
+        const queryString = window.location.search;
+        // it will look like this: ?product=shirt&color=blue&newuser&size=m
+
+        // parse the query string's paramters
+        const urlParams = new URLSearchParams(queryString);
+
+        // To get a parameter simply write something like the follwing
+        const paramValue = urlParams.get('id');
+        console.log(paramValue);
+        
+        if(paramValue){
+            let activityResult= await agent.Activities.details(`query=query GetActivityByID{
+                GetActivityByID(_id:"${paramValue}"){
+                   ActivityID
+                  CreatedAT
+                  UpdatedAT
+                  DeletedAT
+                  CreatedBy
+                  ModifiedBy
+                 
+                  Properties{
+                    key 
+                    DataType
+                    value
+                  }
+                }
+              }`)
+
+              if (activityResult.data){
+                runInAction(()=>{
+                    let _row:GetActivityByID = JSON.parse(JSON.stringify( activityResult.data))
+                    this.selectedActivityRecord =_row.GetActivityByID!;
+                   console.log(this.selectedActivityRecord)
+                })
+                
+            }
+     
+        }
+    }
+
+    
+
 }

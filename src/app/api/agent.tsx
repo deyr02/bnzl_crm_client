@@ -3,9 +3,12 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { Activity } from '../models/Activity';
 import { CustomFieldElement } from '../models/CustomFieldElement';
-import { GetAllActivityResponse, GetMetaActivityCollectionResponse } from '../stores/activityStore';
+import { LoginDTO } from '../models/LoginDTO';
+import { UserDTO } from '../models/UserDTO';
+import { GetActivityResponse, GetAllActivityResponse, GetMetaActivityCollectionResponse } from '../stores/activityStore';
 
-import { store } from "../stores/store";
+import {  store, useStore } from "../stores/store";
+import { errorResponse, GetLoginResponse } from '../stores/userStore';
 
 const sleep = (delay:number) =>{
     return new Promise ((resolve)=>{
@@ -15,16 +18,17 @@ const sleep = (delay:number) =>{
 
 
 
-
 axios.defaults.baseURL = "http://127.0.0.1:8090";
 
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
-    if(token) config.headers!.Authorization = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcnlkYXRlIjoiMjAyMi0wNy0yNiAxNDo0OToyOS4xNjc4NDg5ICsxMjAwIE5aU1QgbT0rODgwMjUuMzQ2MzQ3NjAxIiwicm9sZWlkIjoiMTExMTExMTExMTExMTExMTExMSIsInVzZXJuYW1lIjoiYm56bF9hZG1pbiJ9.6I__9z98YvZkHCOWBbkJit1PLz-wH9uCIey458M_ZIc`    
+    if(token) axios.defaults.headers.common = {'Authorization': token}
+    //config.headers!.Authorization = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcnlkYXRlIjoiMjAyMi0wNy0yNiAxNDo0OToyOS4xNjc4NDg5ICsxMjAwIE5aU1QgbT0rODgwMjUuMzQ2MzQ3NjAxIiwicm9sZWlkIjoiMTExMTExMTExMTExMTExMTExMSIsInVzZXJuYW1lIjoiYm56bF9hZG1pbiJ9.6I__9z98YvZkHCOWBbkJit1PLz-wH9uCIey458M_ZIc`    
     //`${token}`
     return config;
 })
-axios.defaults.headers.common = {'Authorization': `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcnlkYXRlIjoiMjAyMi0wNy0yNiAxNDo0OToyOS4xNjc4NDg5ICsxMjAwIE5aU1QgbT0rODgwMjUuMzQ2MzQ3NjAxIiwicm9sZWlkIjoiMTExMTExMTExMTExMTExMTExMSIsInVzZXJuYW1lIjoiYm56bF9hZG1pbiJ9.6I__9z98YvZkHCOWBbkJit1PLz-wH9uCIey458M_ZIc`}
+
+axios.defaults.headers.common = {'Authorization':  window.localStorage.getItem('jwt')!}
 
 axios.interceptors.response.use(async response =>{
     if(process.env.NODE_ENV === 'development') await sleep(1000);
@@ -83,6 +87,10 @@ const requests = {
 }
 
 
+const Account = {
+    login:(loginFormCollection: any)=> requests.post<GetLoginResponse|errorResponse>('/login', loginFormCollection),
+}
+
 const Activities = {
     list: (param:string)=> axios.get<GetAllActivityResponse>(`/activity/getallactivities?${param}`)
         .then(responseBody),
@@ -90,9 +98,9 @@ const Activities = {
     FormFileds: (param:string)=> axios.get<GetMetaActivityCollectionResponse>(`/activityform/metaactivity?${param}`)
         .then(responseBody),
 
-    create: (activityFormcollection:any)=> requests.post<void>('/activity/', activityFormcollection),
+    create: (activityFormcollection:any)=> requests.post<boolean>('/activity/', activityFormcollection),
     
-    details: ( param: string) => requests.get<Activity>(`/activity/getactivity?${param}`),
+    details: ( param: string) => requests.get<GetActivityResponse|errorResponse>(`/activity/getactivity?${param}`),
     
 }
 
@@ -100,7 +108,7 @@ const Activities = {
 
 const agent = {
     Activities,
-   // Account,
+    Account,
    // Profiles
 }
 

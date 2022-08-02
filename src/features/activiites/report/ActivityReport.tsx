@@ -1,11 +1,17 @@
 import jsPDF from "jspdf";
-import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Grid, Header } from "semantic-ui-react";
 import Column from "../../../app/common/report/Column";
+import { Activity } from "../../../app/models/Activity";
 import { RowDetails } from "../../../app/models/RowDetails";
+import { useStore } from "../../../app/stores/store";
 
+interface Prop{
+    activity:Activity;
+}
 
-export default function ActivityReport(){
+export default observer( function ActivityReport(prop:Prop){
     let _data:RowDetails[] = [
         {
             fieldName: "ActivityName",
@@ -58,12 +64,52 @@ export default function ActivityReport(){
         }
     ]
 
-    let _fildCollection:RowDetails[] =  _data;
+    const{activityStore} = useStore();
+    const{loadSelectedActivity, selectedActivityRecord} =activityStore;
+    let _fildCollection:RowDetails[] =  getRowDetails(prop.activity);
     let _report:RowDetails[]= [];
-
     const[data, setData]= useState<[RowDetails[], RowDetails[]]>([_fildCollection, _report])
 
-    console.log(data)
+ 
+
+    function getRowDetails(activity:Activity){
+
+        let _rows:RowDetails[] = [];
+        if (activity){
+            activity.Properties.forEach(ele =>{
+                let row:RowDetails ={
+                    fieldName: ele.key,
+                    DataType: ele.DataType,
+                    value:ele.value,
+                    onlyKey: true,
+                    DragStart:drag,
+                }
+                _rows.push(row);
+            })
+        }
+       
+        return _rows;
+    }
+ 
+    function renderReport(){
+        let activity=  loadSelectedActivity().then(()=>{
+            if(selectedActivityRecord!){
+                _fildCollection = getRowDetails(selectedActivityRecord);
+
+                console.log(_fildCollection);
+                setData([_fildCollection, _report]);
+            }
+        })
+        
+    }
+
+    // useEffect(()=>{
+   
+    //   if(data[0].length === 0 &&  data[1].length === 0) renderReport();
+       
+    //   console.log(_fildCollection.length);
+    // },[renderReport])
+
 
 
     //  hold the value of dragged element id.
@@ -200,7 +246,14 @@ function generatePdf (){
                 onDrop={drop}
                 />
                 <Grid.Column width={16} textAlign="right">
+                <Button  style={{marginBottom:"20px"}}
+                     onClick={()=> window.location.reload()}
+                      color="youtube"
+                      content = "Cancel" 
+                      
+                  />
                     <Button onClick={generatePdf} primary>Generate PDF Report</Button>
+                   
                 </Grid.Column>
 
             </Grid>
@@ -208,4 +261,4 @@ function generatePdf (){
 
         </Container>
     )
-}
+})

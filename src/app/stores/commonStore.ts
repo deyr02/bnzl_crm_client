@@ -1,4 +1,5 @@
 import { makeAutoObservable, reaction } from "mobx";
+import { isConstructorDeclaration } from "typescript";
 import { ServerError } from "../models/ServerError";
 
 export default class CommonStore{

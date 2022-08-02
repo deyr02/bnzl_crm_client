@@ -3,15 +3,26 @@ import ReactDOM from 'react-dom/client';
 import 'semantic-ui-css/semantic.min.css'
 import './index.css';
 import App from './app/layout/App';
+import { createBrowserHistory } from "history";
 import reportWebVitals from './reportWebVitals';
 import { store, StoreContext } from './app/stores/store';
+import { BrowserRouter, Router } from 'react-router-dom';
+
+export const history = createBrowserHistory();
+
+
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <StoreContext.Provider value={store}>
-  <App />
+     <BrowserRouter>
+      <App/>
+     </BrowserRouter>
+  
   </StoreContext.Provider>
   
 );

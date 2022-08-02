@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { Button, Form, Header, Segment } from "semantic-ui-react";
 import CheckBoxes from "../../../app/common/form/CheckBoxes";
 import DateInput from "../../../app/common/form/DateInput";
@@ -12,6 +13,7 @@ import { DataType } from "../../../app/models/DataType";
 import { NewElementValue } from "../../../app/models/ElementValue";
 import { FieldType } from "../../../app/models/FieldType";
 import { useStore } from "../../../app/stores/store";
+import { history } from "../../..";
 
 
 interface activityFormData{
@@ -38,16 +40,19 @@ export default observer(function ActivityForm(){
     }
 
 
-    function handleSubmit(values:any){
+    async function handleSubmit(values:any){
         console.log(fieldValues)
 
         var mutation = "mutation AddActivity{AddNewActivity(input:{Properties:" + formantFieldValues() + " }){ActivityID CreatedAT UpdatedAT CreatedBy ModifiedBy DeletedAT Properties{ key DataType value } }}";
 
           var formCOllection:activityFormData ={query:mutation};
           console.log(formCOllection);
-          createActivity(formCOllection).then(()=>{
-            console.log("created");
-          })
+         let result = await createActivity(formCOllection)
+
+         if(result){
+            history.push('/activity');
+            window.location.reload();
+         }
 
 
 
@@ -224,6 +229,8 @@ export default observer(function ActivityForm(){
             
             {
                 activityMetaRegistry.size > 0?(
+                    <>
+                   
                 <Button  style={{marginBottom:"20px"}}
                       
                       floated='right' 
@@ -233,9 +240,18 @@ export default observer(function ActivityForm(){
                       
                   />
 
+                <Button  style={{marginBottom:"20px"}}
+                      as={NavLink}
+                      to="/activity"
+                      floated='right' 
+                      color="youtube"
+                      content = "Cancel" 
+                      
+                  />
+                    </>
                 ):(
-                    <Header as='h3' color="red" textAlign='center'> 
-                     Activity form  is currently unavialable.
+                    <Header as='h3' color="green" textAlign='center'> 
+                     Activity form  is loading.......
                     </Header>
                 )
             }

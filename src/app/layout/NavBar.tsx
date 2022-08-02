@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { Container, Menu } from "semantic-ui-react";
 
 export default function NavBar(){
@@ -6,9 +7,9 @@ export default function NavBar(){
     return(
         <Menu inverted fixed='top'>
             <Container>
-            <Menu.Item 
-                name='home'>
-                Home
+            <Menu.Item onClick={()=>window.location.reload()}  as={NavLink} to="/activity"
+                name='activity'>
+                Activity
             </Menu.Item>
 
             {/* <Menu.Item
